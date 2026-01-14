@@ -2,6 +2,7 @@
 -- 1. Creates a new database named 'userstransactiondb' 
 -- if it doesn't already exist to avoid errors.
 -- ==========================================
+DROP DATABASE userstransactiondb;
 CREATE DATABASE IF NOT EXISTS userstransactiondb;
 
 -- ==========================================
@@ -9,6 +10,7 @@ CREATE DATABASE IF NOT EXISTS userstransactiondb;
 -- active database for subsequent commands.
 -- ==========================================
 USE userstransactiondb;
+SET AUTOCOMMIT = 1;
 
 -- ==========================================
 -- 3. Defines the 'users' table structure, 
@@ -26,7 +28,8 @@ CREATE TABLE users(
 -- so there is data to manipulate.
 -- ==========================================
 INSERT INTO users (first_name, last_name, email)
-VALUES ("John", "Doe", "johndoe@gmail.com");
+VALUES ("John", "Doe", "johndoe@gmail.com"),
+        ("Test", "Tan", "testtan@gmail.com");
 
 -- ==========================================
 -- 5. Disables the automatic saving of changes. 
@@ -40,6 +43,10 @@ SET AUTOCOMMIT = 0; -- turns off auto commit (so that one can roll back accident
 -- ==========================================
 DELETE FROM users 
 WHERE id = 1;
+
+UPDATE users
+SET last_name = "Teo", email = "testteo@gmail.com"
+WHERE id = 2;
 
 -- ==========================================
 -- 7. Undoes the DELETE command above, 
@@ -85,7 +92,7 @@ COMMIT;
 -- 13. Attempts to undo; however, since COMMIT
 -- was just called, this has no effect on the saved data.
 -- ==========================================
-ROLLBACK;
+ROLLBACK;       -- won't work, since changes already committed
 
 -- ==========================================
 -- 14. Changes the last name of the user (Part 1
